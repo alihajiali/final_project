@@ -33,7 +33,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_filter = ('title',)
     search_fields = ('title',)
 
-
+ 
 # @admin.register(Tag)
 # class TagAdmin(admin.ModelAdmin):
 #     list_display = ('title',)
