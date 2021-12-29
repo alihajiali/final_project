@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}profile Page{% endblock title %}
+
+{% block header %}
+<li class="nav-item">
+    <a class="nav-link active" aria-current="page" onclick="open_create_shop_Form()" href="#">create a new shop</a>
+</li>
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+<div class="form-popup" id="form_create_shop" style="z-index: 8; margin: 10% 20% 10% 20%;">
+    <form action="{% url 'shop:create_market' %}" method="post" style="height: 330px;" class="form-container">
+        {% csrf_token %}
+        <div class="text-center">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <label for="title"><b>title</b></label>
+                        <input type="text" placeholder="Enter title" name="title" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="slug"><b>slug</b></label>
+                        <input type="text" placeholder="Enter slug" name="slug" required>
+                    </div>
+
+                    <label for="type"><b>type</b></label>
+                    <select name="type" required="" id="id_type" style="width: 40%; text-align: center; margin: 0 30% 2% 30%;">
+                        <option value="" selected="">---------</option>
+                        <option value="D">کالا های دیجیتال</option>
+                        <option value="C">خودرو و ابزار و تجهیزات صنعتی</option>
+                        <option value="M">مد و پوشاک</option>
+                        <option value="K">اسباب بازی , کودک و نوزاد</option>
+                        <option value="S">کالاهای سوپرمارکتی</option>
+                        <option value="Z">زیبایی و سلامت</option>
+                        <option value="P">خانه و آشپزخانه</option>
+                        <option value="B">کتاب و لوازم تحریر و هنر</option>
+                        <option value="V">ورزش و سفر</option>
+                        <option value="H">محصولات بومی و محلی</option>
+                      </select>
+
+                    <button class="btn btn-success" type="submit">create</button>
+                    <a href="/"><button type="button" onclick="close_create_shop_Form()" class="btn cancel">Close</button></a>
+                </div>
+            </div>
+        </div>
+        <br><br>
+    </form>
+</div>
+
+<script src="{% static 'js/forms.js' %}"></script>
+{% endblock %}

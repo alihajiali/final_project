@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}login Page{% endblock title %}
+
+{% block content %}
+
+{% load static %}
+<div class="form-popup" style="display: block; z-index: 8;margin: 5% 35%;">
+    <form method="post" class="form-container">
+        {% csrf_token %}
+        <img style="margin: 0 35%;" id="login-gif" src="{% static 'img/User.gif' %}" alt="gif">
+        <div class="text-center">
+
+            <label for="email"><b>Email</b></label>
+            {{ form.username }}<br>
+
+            <label for="password"><b>password</b></label>
+            {{ form.password }}<br>
+
+            <button class="btn btn-success" type="submit">log in</button>
+            <a href="/"><button type="button" class="btn cancel">Close</button></a>
+        </div>
+</div>
+</div>
+<br><br>
+</form>
+</div>
+{% endblock %}
