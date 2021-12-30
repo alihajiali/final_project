@@ -2,9 +2,26 @@
 
 {% block title %}profile Page{% endblock title %}
 
+{% block drop_down %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        لیست فروشگاه های شما
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        {% for market in market_user %}
+        <li><a class="dropdown-item" href="{% url 'shop:srore' market.slug %}">{{ market }}</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        {% endfor %}
+    </ul>
+</li>
+{% endblock %}
+
 {% block header %}
 <li class="nav-item">
-    <a class="nav-link active" aria-current="page" onclick="open_create_shop_Form()" href="#">create a new shop</a>
+    <a class="nav-link active" aria-current="page" onclick="open_create_shop_Form()" href="#">ایجاد فروشگاه جدید</a>
 </li>
 {% endblock %}
 
@@ -19,17 +36,18 @@
                 <div class="row">
 
                     <div class="col-md-6">
-                        <label for="title"><b>title</b></label>
-                        <input type="text" placeholder="Enter title" name="title" required>
+                        <label for="title"><b>عنوان فروشگاه</b></label>
+                        <input type="text" placeholder="عنوان فروشگاه را وارد نمایید" name="title" required>
                     </div>
 
                     <div class="col-md-6">
-                        <label for="slug"><b>slug</b></label>
-                        <input type="text" placeholder="Enter slug" name="slug" required>
+                        <label for="slug"><b>آدرس اینترنتی</b></label>
+                        <input type="text" placeholder="آدرس اینترنتی فروشگاه را وارد نمایید" name="slug" required>
                     </div>
 
-                    <label for="type"><b>type</b></label>
-                    <select name="type" required="" id="id_type" style="width: 40%; text-align: center; margin: 0 30% 2% 30%;">
+                    <label for="type"><b>نوع فروشگاه</b></label>
+                    <select name="type" required="" id="id_type"
+                        style="width: 40%; text-align: center; margin: 0 30% 2% 30%;">
                         <option value="" selected="">---------</option>
                         <option value="D">کالا های دیجیتال</option>
                         <option value="C">خودرو و ابزار و تجهیزات صنعتی</option>
@@ -41,10 +59,11 @@
                         <option value="B">کتاب و لوازم تحریر و هنر</option>
                         <option value="V">ورزش و سفر</option>
                         <option value="H">محصولات بومی و محلی</option>
-                      </select>
+                    </select>
 
-                    <button class="btn btn-success" type="submit">create</button>
-                    <a href="/"><button type="button" onclick="close_create_shop_Form()" class="btn cancel">Close</button></a>
+                    <button class="btn btn-success" type="submit">ایجاد</button>
+                    <a href="#"><button type="button" onclick="close_create_shop_Form()"
+                            class="btn cancel">بیخیال</button></a>
                 </div>
             </div>
         </div>

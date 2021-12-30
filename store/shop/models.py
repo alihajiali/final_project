@@ -25,7 +25,7 @@ class Market(models.Model):
     )
     title = models.CharField(max_length=200)
     slug = models.CharField(max_length=200, unique=True)
-    owner = models.ForeignKey(User, on_delete=CASCADE)
+    owner = models.ForeignKey(User, on_delete=CASCADE, related_name="owner_market")
     status = models.CharField(max_length=1, choices=STATUS, default='P')
     type = models.CharField(max_length=1, choices=TYPE)
 

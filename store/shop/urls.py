@@ -6,4 +6,5 @@ app_name = 'shop'
 urlpatterns = [
     path('', views.home, name='home'),
     path('create-shop', views.CreateShop.as_view(), name='create_market'),
+    path('store/<slug:slug>/', views.Admin_Store.as_view(), name='srore')
 ]

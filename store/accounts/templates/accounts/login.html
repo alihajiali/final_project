@@ -5,20 +5,20 @@
 {% block content %}
 
 {% load static %}
-<div class="form-popup" style="display: block; z-index: 8;margin: 5% 35%;">
+<div class="form-popup" style="display: block; z-index: 8;margin: 3% 34%;">
     <form method="post" class="form-container">
         {% csrf_token %}
         <img style="margin: 0 35%;" id="login-gif" src="{% static 'img/User.gif' %}" alt="gif">
         <div class="text-center">
 
-            <label for="email"><b>Email</b></label>
+            <label for="email"><b>ایمیل</b></label>
             {{ form.username }}<br>
 
-            <label for="password"><b>password</b></label>
+            <label for="password"><b>رمز عبور</b></label>
             {{ form.password }}<br>
 
-            <button class="btn btn-success" type="submit">log in</button>
-            <a href="/"><button type="button" class="btn cancel">Close</button></a>
+            <button class="btn btn-success" type="submit">ورود</button>
+            <a href="/"><button type="button" class="btn cancel">بیخیال</button></a>
         </div>
 </div>
 </div>

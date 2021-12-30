@@ -17,52 +17,66 @@
 
 <body class="body">
 
-  <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+
+
+
+
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-warning">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/">shop-name</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          {% if user.is_authenticated %}
+      <div class="container">
+        <div class="row">
+          <div class="col-sm">
+            <form class="d-flex" action='' method='POST'>
+              {% csrf_token %}
+              <input
+                style="border-top: 0;border-left: 0;border-right: 0; background-color: transparent; border-color: white;border-radius: 10px;text-align: center;width: 200px;"
+                class="form-control me-2" type="search" placeholder="متن خود را وارد کنید" aria-label="Search" name="search">
+              <button class="btn btn-outline-dark" type="submit">جستجو</button>
+            </form>
+          </div>
+          <div style="text-align: right;" class="col-sm">
+            <button style="float: right; color: transparent; border-color: transparent;" class="navbar-toggler"
+              type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div style="float: right;" class="collapse navbar-collapse" id="navbarSupportedContent">
 
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              shop-list
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" href="#">{{ user__Market.title }}</a></li>
-              <li><hr class="dropdown-divider"></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'accounts:profile' %}">profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'accounts:log_out' %}">log out</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'accounts:register' %}">register</a>
-            <!-- <a class="nav-link active open-button" onclick="openForm2()" aria-current="page" href="#">register</a> -->
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'accounts:login' %}">log in</a>
-          </li>
-          {% endif %}
-          {% block header %}{% endblock %}
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    {% if user.is_authenticated %}
+                    {% block drop_down %}{% endblock %}
+                    <li class="nav-item">
+                      {% if user.is_seller %}
+                      <a class="nav-link active" aria-current="page" href="{% url 'accounts:profile' %}">حساب کاربری</a>
+                      {% endif %}
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url 'accounts:log_out' %}">خروج</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url 'accounts:register' %}">ثبت نام</a>
+                      <!-- <a class="nav-link active open-button" onclick="openForm2()" aria-current="page" href="#">register</a> -->
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="{% url 'accounts:login' %}">ورود</a>
+                    </li>
+                    {% endif %}
+                    {% block header %}{% endblock %}
+                  </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
+
+
+
+
 
   {% block content %}{% endblock %}
 

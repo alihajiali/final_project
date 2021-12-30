@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}admin - {{ market }}{% endblock title %}
+
+{% block drop_down %}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        فروشگاه
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="#">لیست محصولات</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">افزودن محصول</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">لیست تگ ها</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" onclick="create_tag_form()" href="#">افزودن تگ</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">لیست دسته بندی ها</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">افزودن دسته بندی ها</a></li>
+    </ul>
+</li>
+
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        بلاگ
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+        <li><a class="dropdown-item" href="#">لیست پست ها</a></li>
+        <li>
+            <hr class="dropdown-divider">
+        </li>
+        <li><a class="dropdown-item" href="#">افزودن پست</a></li>
+        <li>
+    </ul>
+</li>
+{% endblock %}
+
+{% block content %}
+
+{% load static %}
+
+{% include 'shop/inc/forms.html' %}
+
+</div>
+
+<script src="{% static 'js/forms.js' %}"></script>
+{% endblock %}
