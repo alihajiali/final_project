@@ -145,3 +145,5 @@ REST_FREAMEWORK = {
 }
 
 # AUTHENTICATION_BACKENDS = ['accounts.mybackends.EmailUserNameModelBackend','django.contrib.auth.backends.ModelBackend']
+
+LOGIN_REDIRECT_URL = '/'
