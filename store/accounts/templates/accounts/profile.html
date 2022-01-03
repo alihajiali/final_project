@@ -10,7 +10,7 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
         {% for market in market_user %}
-        <li><a class="dropdown-item" href="{% url 'shop:srore' market.slug %}">{{ market }}</a></li>
+        <li><a class="dropdown-item" href="{% url 'shop:store' market.slug %}">{{ market }}</a></li>
         <li>
             <hr class="dropdown-divider">
         </li>
