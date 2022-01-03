@@ -1,15 +1,11 @@
-from typing import ValuesView
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse_lazy
 from .forms import SignUpForm
 from .models import User
 from shop.models import Market
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, logout, views as auth_views
-from django.views.generic import View, CreateView, TemplateView
-from django.views.generic.edit import BaseCreateView
-from django.http import HttpResponse
-
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout, views as auth_views
+from django.views.generic import View, CreateView
+from django.contrib.auth.mixins import Login_is_seller_Mixin
 
 
 class login(auth_views.LoginView):
@@ -35,10 +31,7 @@ class log_out(View):
         return redirect('shop:home')
 
 
-class profile(LoginRequiredMixin, TemplateView):
-    template_name = "accounts/profile.html"
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['market_user'] = Market.objects.filter(owner=self.request.user)
-        return context
+class profile(Login_is_seller_Mixin, View):
+    def get(self, request, *args, **kwargs):
+        market_user = Market.objects.filter(owner=self.request.user)
+        return render(request, "accounts/profile.html", {'market_user':market_user})

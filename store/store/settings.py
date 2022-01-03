@@ -14,7 +14,7 @@ SECRET_KEY = 'django-insecure-+(!esb##-u8z1kr+1wm9g^z59=bj1%c0(6dslqoh_68&#y&a$m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [] 
+ALLOWED_HOSTS = ['127.0.0.1'] 
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'randomslugfield',
     'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 AUTH_USER_MODEL = 'accounts.User'
 

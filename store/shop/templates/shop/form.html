@@ -55,6 +55,14 @@
 
 {% include 'shop/inc/forms.html' %}
 
+{% load crispy_forms_tags %}
+
+<form enctype="multipart/form-data" style="width: 50%; margin: 3% 25%;" action="" method="post">
+    {% csrf_token %}
+    <div class="text-center">{{ form|crispy }}</div>
+    <button style="width: 100%; margin: 3% 0;" type="submit" class="btn btn-success">بروزرسانی</button>
+    <a href="#"><p style="width: 100%;"class="btn btn-danger">بیخیال</p></a>
+</form>
 
 <script src="{% static 'js/forms.js' %}"></script>
 {% endblock %}

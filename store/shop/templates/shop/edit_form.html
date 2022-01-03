@@ -21,15 +21,9 @@
         <li>
             <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" onclick="create_tag_form()" href="#">افزودن تگ</a></li>
-        <li>
-            <hr class="dropdown-divider">
-        </li>
         <li><a class="dropdown-item" href="{% url 'shop:show_category' market.slug %}">لیست دسته بندی ها</a></li>
         <li>
             <hr class="dropdown-divider">
-        </li>
-        <li><a class="dropdown-item" onclick="create_category_form()" href="#">افزودن دسته بندی ها</a></li>
     </ul>
 </li>
 
@@ -51,10 +45,16 @@
 
 {% block content %}
 
-{% load static %}
 
-{% include 'shop/inc/forms.html' %}
+{% load crispy_forms_tags %}
 
+<form style="display: block; width: 50%; margin: 15% 25%;" action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button style="width: 100%; margin: 3% 0;" type="submit" class="btn btn-success">بروزرسانی</button>
+    <a href="{% url 'shop:store' market.slug %}"><p style="width: 100%;"class="btn btn-danger">بیخیال</p></a>
+</form>
 
-<script src="{% static 'js/forms.js' %}"></script>
+</div>
+
 {% endblock %}
