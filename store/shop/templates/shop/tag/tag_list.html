@@ -1,0 +1,22 @@
+{% extends 'shop/admin_store.html' %}
+
+{% block form %}
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th scope="col">حذف</th>
+            <th scope="col">ویرایش</th>
+            <th scope="col">عنوان</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tag in tags %}
+        <tr>
+            <td><a href="{% url 'shop:delete_tag' market.slug tag.id %}">حذف</a></td>
+            <td><a href="{% url 'shop:edit_tag' market.slug tag.id %}">ویرایش</a></td>
+            <td>{{ tag.title }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

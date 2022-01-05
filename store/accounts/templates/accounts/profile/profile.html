@@ -10,10 +10,18 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
         {% for market in market_user %}
-        <li><a class="dropdown-item" href="{% url 'shop:store' market.slug %}">{{ market }}</a></li>
+        {% if market.status != 'D' %}
+        <li><a class="dropdown-item text-center fs-4" href="{% url 'shop:store' market.slug %}">{{ market }}</a></li>
+        <div class="container">
+            <div class="row row-cols-2">
+                <li class="btn btn-warning"><a class="dropdown-item text-light" href="{% url 'accounts:edit_market' market.slug %}">ویرایش</a></li>
+                <li class="btn btn-danger"><a class="dropdown-item text-light" href="{% url 'accounts:delete_market' market.slug %}">حذف</a></li>
+            </div>
+        </div>
         <li>
             <hr class="dropdown-divider">
         </li>
+        {% endif %}
         {% endfor %}
     </ul>
 </li>
@@ -29,7 +37,7 @@
 
 {% load static %}
 <div class="form-popup" id="form_create_shop" style="z-index: 8; margin: 10% 20% 10% 20%;">
-    <form action="{% url 'shop:create_market' %}" method="post" style="height: 330px;" class="form-container">
+    <form action="{% url 'accounts:create_market' %}" method="post" style="height: 330px;" class="form-container">
         {% csrf_token %}
         <div class="text-center">
             <div class="container">
@@ -70,6 +78,8 @@
         <br><br>
     </form>
 </div>
+
+{% block form %}{% endblock %}
 
 <script src="{% static 'js/forms.js' %}"></script>
 {% endblock %}

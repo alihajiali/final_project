@@ -34,7 +34,7 @@ class Market(models.Model):
 
 
 class Category(models.Model):
-    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True, blank=True)
+    parent = models.ForeignKey('self',on_delete=models.SET_NULL,blank=True,null=True)
     title = models.CharField(max_length=200)
     created = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(Market, on_delete=CASCADE)
@@ -65,7 +65,7 @@ class Product(models.Model):
     price = models.IntegerField()
     market = models.ForeignKey(Market, on_delete=CASCADE)
     number_product = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='products/%Y/%m/%d/', null=True, blank=True)
+    image = models.ImageField(upload_to='products/%Y/%m/%d/')
     category = models.ManyToManyField(Category)
     tag = models.ManyToManyField(Tag)
     like = models.ManyToManyField(User, blank=True)

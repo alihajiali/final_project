@@ -1,0 +1,11 @@
+{% extends 'accounts/profile/profile.html' %}
+
+{% block form %}
+{%load crispy_forms_tags %}
+<form style="width: 50%; display: block; margin: 10% 25% 0 25%;" action="" method="post">
+    <p dir="rtl"><strong>آیا از حذف مطمئنید ؟</strong></p>
+    {% csrf_token %}
+    <input type="submit" style="width: 100%; margin-bottom: 1%;" class="btn btn-success" value="حذف">
+</form>
+<a href="{% url 'accounts:profile' %}"><button style="width: 50%; display: block; margin: 0 25%;" class="btn btn-danger">بیخیال</button></a>
+{% endblock %}

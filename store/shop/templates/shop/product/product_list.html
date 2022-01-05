@@ -1,0 +1,25 @@
+{% extends 'shop/admin_store.html' %}
+
+{% block form %}
+<div class="container">
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-3" style="margin: 5% 5px;">
+
+            <div class="card" style="width: 15rem;">
+                <img style="border-radius: 20%;" src="{{ product.image.url }}" class="card-img-top" alt="image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.title }}</h5>
+                    <p class="card-text">{{ product.description|slice:"0:20" }}</p>
+
+                    <a href="{% url 'shop:delete_product' market.slug product.id %}" style="width: 100%;" class="btn btn-danger">حذف</a>
+                    <a href="{% url 'shop:edit_product' market.slug product.id %}" style="width: 100%;" class="btn btn-warning">ویرایش</a>
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'shop/admin_store.html' %}
+
+{% block form %}
+{%load crispy_forms_tags %}
+<form style="width: 50%; display: block; margin: 10% 25%;" action="" method="post">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input type="submit" style="width: 100%; margin: 1% 0;" class="btn btn-success" value="ایجاد">
+    <a style="width: 100%;" class="btn btn-danger" href="{% url 'shop:show_category' market.slug %}">بیخیال</a>
+</form>
+{% endblock %}

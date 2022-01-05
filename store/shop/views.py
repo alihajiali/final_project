@@ -8,31 +8,12 @@ from django.urls import reverse_lazy, reverse
 from django.views.generic.base import View
 from django.views.generic.edit import DeleteView, UpdateView
 from shop.models import Category, Market, Tag, Product
-from .forms import NewMarket, NewTag, NewCategory, CreateProductForm
+from .forms import NewTag, NewCategory, CreateProductForm
 
 def home(request):
     return render(request, 'shop/home.html')
 
-class CreateShop(CreateView):
-    model = Market
-    form_class = NewMarket
 
-    def form_valid(self, form):
-        market = form.save(commit=False)
-        markets = Market.objects.filter(owner=self.request.user)
-        for before_market in markets:
-            if before_market.title == market.title or before_market.status == 'P':
-                return redirect("accounts:profile")
-                break
-        else :
-            market.owner = self.request.user
-            market.save()
-            return redirect("accounts:profile")
-    
-    def get_context_data(self,*args, **kwargs):
-        context = super(self).get_context_data(*args,**kwargs)
-        context['market_user'] = Market.objects.filter(owner=self.request.user)
-        return context
 
 class Admin_Store(View):
     def get(self, request, *args, **kwargs):
@@ -43,84 +24,86 @@ class Admin_Store(View):
 
 
 
-
-
-
-
-#                   category
-
-
-
-
+#                   tag
 
 
 
 class CreateTag(CreateView):
     model = Tag
-    form_class = NewTag
-    success_url = reverse_lazy("shop:store")
 
-    def form_valid(self, form):
-        tag = form.save(commit=False)
+    def post(self, request, *args, **kwargs):
+        form = NewTag(request.POST)
         market = Market.objects.get(slug=self.kwargs['slug'])
-        tag_list = Tag.objects.filter(owner=market)
-        for before_tag in tag_list:
-            if tag.title == before_tag.title :
-                return redirect("shop:show_tag", self.kwargs['slug'])
-                break
-        else:
-            tag.owner = market
-            tag.save()
-            return redirect("shop:show_tag", self.kwargs['slug'])
+        tag_list = Tag.objects.filter(owner = market)
+        if form.is_valid():
+            tag = form.save(commit=False)
+            for before_tag in tag_list:
+                if before_tag.title == tag.title:
+                    break
+            else:
+                if request.user == market.owner:
+                    tag.owner = market
+                    tag.save()
+        tags = Tag.objects.filter(owner = market)
+        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
+
+    def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        form = NewTag
+        return render(request, "shop/tag/create_tag.html", {'market':market, 'form':form})
+
 
 
 class ShowTag(View):
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
         tags = Tag.objects.filter(owner=market)
-        return render(request, "shop/table.html", {'subsets':tags, 'market':market, 'type':"tag"})
+        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
+
 
 
 class EditTag(View):
     model = Tag
+
     def post(self, request, *args, **kwargs):
         tag = Tag.objects.get(id=self.kwargs['pk'])
+        form = NewTag(request.POST)
         market = Market.objects.get(slug=self.kwargs['slug'])
-        new_title = request.POST['title']
+        tag_list = Tag.objects.filter(owner = market)
+        if form.is_valid():
+            new_tag = form.save(commit=False)
+            for before_tag in tag_list:
+                if before_tag.title == new_tag.title:
+                    break
+            else:
+                if request.user == market.owner:
+                    tag.title = new_tag.title
+                    tag.save()
+        tags = Tag.objects.filter(owner = market)
+        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
 
-        tag_list = Tag.objects.filter(owner=market)
-        for before_tag in tag_list:
-            if before_tag.title == new_title :
-                return redirect("shop:show_tag", self.kwargs['slug'])
-                break
-        else:
-            tag.title = new_title
-            tag.save()
-            return redirect("shop:show_tag", self.kwargs['slug'])
-        
     def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
         tag = Tag.objects.get(id=self.kwargs['pk'])
         form = NewTag(instance=tag)
-        market = Market.objects.get(slug=self.kwargs['slug'])
-        return render(request, "shop/edit_form.html", {'subsets':tag, 'type':"tag", 'form':form, 'market':market})
+        return render(request, "shop/tag/edit_tag.html", {'market':market, 'form':form})
+
 
 
 class DeleteTag(View):
     model = Tag
+
     def get(self, request, *args, **kwargs):
         tag = Tag.objects.get(id=self.kwargs['pk'])
         market = Market.objects.get(slug=self.kwargs['slug'])
-        return render(request, "shop/delete.html", {'type_delete':'tag', 'market':market, 'tag':tag})
+        return render(request, "shop/tag/delete_tag.html", {'market':market, 'tag':tag})
 
     def post(self, request, *args, **kwargs):
         tag = Tag.objects.get(id=self.kwargs['pk'])
         tag.delete()
         market = tag.owner
         tags = Tag.objects.filter(owner = market)
-        return render(request, "shop/table.html", {'subsets':tags, 'market':market, 'type':"tag"})
-
-
-
+        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
 
 
 
@@ -128,75 +111,78 @@ class DeleteTag(View):
 
 
 
-
-
-
-
 class CreateCategory(CreateView):
     model = Category
-    form_class = NewCategory
-    success_url = reverse_lazy("shop:store")
 
-    def form_valid(self, form):
-        category = form.save(commit=False)
+    def post(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
-        category_list = Category.objects.filter(owner=market)
-        for before_category in category_list:
-            if category.title == before_category.title :
-                return redirect("shop:show_category", self.kwargs['slug'])
-                break
-        else:
-            category.owner = market
-            category.save()
-            return redirect("shop:show_category", self.kwargs['slug'])
+        form = NewCategory(market, request.POST)
+        category_list = Category.objects.filter(owner = market)
+        if form.is_valid():
+            category = form.save(commit=False)
+            for before_category in category_list:
+                if before_category.title == category.title:
+                    break
+            else:
+                if request.user == market.owner:
+                    category.owner = market
+                    category.save()
+        categorys = Category.objects.filter(owner = market)
+        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
+
+    def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        form = NewCategory(market)
+        return render(request, "shop/category/create_category.html", {'market':market, 'form':form})
+
 
 
 class ShowCategory(View):
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
         categorys = Category.objects.filter(owner=market)
-        return render(request, "shop/table.html", {'subsets':categorys, 'market':market, 'type':"category"})
+        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
+
 
 
 class EditCategory(View):
     model = Category
+
     def post(self, request, *args, **kwargs):
         category = Category.objects.get(id=self.kwargs['pk'])
         market = Market.objects.get(slug=self.kwargs['slug'])
-        new_title = request.POST['title']
+        form = NewCategory(market, request.POST)
+        if form.is_valid():
+            new_category = form.save(commit=False)
+            if request.user == market.owner:
+                category.title = new_category.title
+                category.parent = new_category.parent
+                category.save()
+        categorys = Category.objects.filter(owner = market)
+        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
 
-        category_list = Category.objects.filter(owner=market)
-        for before_category in category_list:
-            if before_category.title == new_title :
-                return redirect("shop:show_category", self.kwargs['slug'])
-                break
-        else:
-            category.title = new_title
-            category.save()
-            return redirect("shop:show_category", self.kwargs['slug'])
-        
     def get(self, request, *args, **kwargs):
-        category = Category.objects.get(id=self.kwargs['pk'])
-        form = NewCategory(instance=category)
         market = Market.objects.get(slug=self.kwargs['slug'])
-        return render(request, "shop/edit_form.html", {'subsets':category, 'type':"category", 'form':form, 'market':market})
+        category = Category.objects.get(id=self.kwargs['pk'])
+        form = NewCategory(market, instance=category)
+        return render(request, "shop/category/edit_category.html", {'market':market, 'form':form})
+
 
 
 class DeleteCategory(View):
     model = Category
+
     def get(self, request, *args, **kwargs):
         category = Category.objects.get(id=self.kwargs['pk'])
         market = Market.objects.get(slug=self.kwargs['slug'])
-        return render(request, "shop/delete.html", {'type_delete':'category', 'market':market, 'category':category})
+        return render(request, "shop/category/delete_category.html", {'market':market, 'category':category})
 
     def post(self, request, *args, **kwargs):
         category = Category.objects.get(id=self.kwargs['pk'])
         category.delete()
         market = category.owner
         categorys = Category.objects.filter(owner = market)
-        return render(request, "shop/table.html", {'subsets':categorys, 'market':market, 'type':"tag"})
-
-
+        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
 
 
 
@@ -204,21 +190,68 @@ class DeleteCategory(View):
 
 
 
-
-
-
 class CreateProduct(CreateView):
-    def get(self, request, *args, **kwargs):
-        form = CreateProductForm
-        market = Market.objects.get(slug=self.kwargs['slug'])
-        return render(request, 'shop/form.html', {'form':form, 'market':market})
-
     def post(self, request, *args, **kwargs):
-        form = CreateProductForm(request.POST, request.FILES)
         market = Market.objects.get(slug=self.kwargs['slug'])
+        form = CreateProductForm(market, request.POST, request.FILES)
+        product_list = Product.objects.filter(market = market)
         if form.is_valid():
             product = form.save(commit=False)
-            product.owner = market
-            product.save()
-            return render(request, 'shop/form.html', {'form': form, 'market':market})
-        return render(request, 'shop/form.html', {'form': form, 'market':market})
+            for before_product in product_list:
+                if before_product.title == product.title:
+                    break
+            else:
+                if request.user == market.owner:
+                    product.market = market
+                    product.save()
+                    form.save_m2m()
+        return redirect("shop:show_product", market.slug)
+
+    def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        form = CreateProductForm(market)
+        return render(request, 'shop/product/create_product.html', {'form':form, 'market':market})
+
+
+class ShowProduct(View):
+    def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        products = Product.objects.filter(market=market)
+        return render(request, "shop/product/product_list.html", {'products':products, 'market':market})
+
+
+
+class EditProduct(View):
+    def post(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        product = Product.objects.get(id=self.kwargs['pk'])
+        form = CreateProductForm(market, request.POST, request.FILES, instance=product)
+        if form.is_valid():
+            new_product = form.save(commit=False)
+            if request.user == market.owner:
+                new_product.save()
+                form.save_m2m()
+        return redirect("shop:show_product", market.slug)
+
+    def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        product = Product.objects.get(id=self.kwargs['pk'])
+        form = CreateProductForm(market, instance=product)
+        return render(request, 'shop/product/edit_product.html', {'form':form, 'market':market})
+
+
+
+class DeleteProduct(View):
+    model = Product
+
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.get(id=self.kwargs['pk'])
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        return render(request, "shop/product/delete_product.html", {'market':market, 'product':product})
+
+    def post(self, request, *args, **kwargs):
+        product = Product.objects.get(id=self.kwargs['pk'])
+        product.delete()
+        market = product.market
+        products = Product.objects.filter(market = market)
+        return redirect("shop:show_product", market.slug)

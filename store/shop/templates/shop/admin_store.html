@@ -9,7 +9,7 @@
         فروشگاه
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <li><a class="dropdown-item" href="#">لیست محصولات</a></li>
+        <li><a class="dropdown-item" href="{% url 'shop:show_product' market.slug %}">لیست محصولات</a></li>
         <li>
             <hr class="dropdown-divider">
         </li>
@@ -21,7 +21,7 @@
         <li>
             <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" onclick="create_tag_form()" href="#">افزودن تگ</a></li>
+        <li><a class="dropdown-item" href="{% url 'shop:create_tag' market.slug %}">افزودن تگ</a></li>
         <li>
             <hr class="dropdown-divider">
         </li>
@@ -29,7 +29,7 @@
         <li>
             <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" onclick="create_category_form()" href="#">افزودن دسته بندی ها</a></li>
+        <li><a class="dropdown-item" href="{% url 'shop:create_category' market.slug %}">افزودن دسته بندی ها</a></li>
     </ul>
 </li>
 
@@ -51,10 +51,6 @@
 
 {% block content %}
 
-{% load static %}
+{% block form %}{% endblock %}
 
-{% include 'shop/inc/forms.html' %}
-
-
-<script src="{% static 'js/forms.js' %}"></script>
 {% endblock %}

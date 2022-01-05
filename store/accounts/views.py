@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy
-from .forms import SignUpForm
+from .forms import SignUpForm, NewMarket
 from .models import User
 from shop.models import Market
 from django.shortcuts import render, redirect
@@ -34,4 +34,67 @@ class log_out(View):
 class profile(Login_is_seller_Mixin, View):
     def get(self, request, *args, **kwargs):
         market_user = Market.objects.filter(owner=self.request.user)
-        return render(request, "accounts/profile.html", {'market_user':market_user})
+        return render(request, "accounts/profile/profile.html", {'market_user':market_user})
+
+
+class CreateShop(CreateView):
+    model = Market
+    form_class = NewMarket
+
+    def form_valid(self, form):
+        market = form.save(commit=False)
+        markets = Market.objects.filter(owner=self.request.user)
+        for before_market in markets:
+            if before_market.title == market.title or before_market.status == 'P':
+                return redirect("accounts:profile")
+                break
+        else :
+            market.owner = self.request.user
+            market.save()
+            return redirect("accounts:profile")
+    
+    def get_context_data(self,*args, **kwargs):
+        context = super(self).get_context_data(*args,**kwargs)
+        context['market_user'] = Market.objects.filter(owner=self.request.user)
+        return context
+
+
+class EditShop(View):
+    model = Market
+    def post(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        new_title = request.POST['title']
+        new_slug = request.POST['slug']
+
+        markets = Market.objects.filter(owner=self.request.user)
+        for before_market in markets:
+            if before_market.title == new_title:
+                return redirect("accounts:profile")
+                break
+        else :
+            market.title = new_title
+            market.slug = new_slug
+            market.status = 'P'
+            market.save()
+            return redirect("accounts:profile")
+        
+    def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        form = NewMarket(instance=market)
+        market_user = Market.objects.filter(owner=self.request.user)
+        return render(request, "accounts/profile/edit_shop.html", {'form':form, 'market':market, 'market_user':market_user})
+
+
+
+class DeleteShop(View):
+    model = Market
+    def post(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        market.status = 'D'
+        market.save()
+        return redirect("accounts:profile")
+        
+    def get(self, request, *args, **kwargs):
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        market_user = Market.objects.filter(owner=self.request.user)
+        return render(request, "accounts/profile/delete_shop.html", {'market':market, 'market_user':market_user})

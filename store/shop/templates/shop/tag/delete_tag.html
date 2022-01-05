@@ -1,0 +1,12 @@
+{% extends 'shop/admin_store.html' %}
+
+{% block form %}
+<div class="form-popup" style="margin: 8% 37%; display: block;" id="delete_tag">
+    <form action="" method="post" class="form-container" style="height: 200px;">
+        {% csrf_token %}
+        <h3>آیا از حذف اطمینان دارید</h3>
+        <input type="submit" class="btn btn-success" value="حذف">
+        <a href="{% url 'shop:show_tag' market.slug %}"><button type="button" class="btn cancel">بیخیال</button></a>
+    </form>
+</div>
+{% endblock %}
