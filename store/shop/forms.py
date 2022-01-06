@@ -39,14 +39,14 @@ class CreateProductForm(forms.ModelForm):
             self.fields['tag'].queryset = Tag.objects.filter(owner=market)
     class Meta:
         model = Product
-        fields = ['title', 'description', 'price', 'number_product', 'image', 'category', 'tag', 'expire', 'status']
+        fields = ['title', 'description', 'price', 'number_product', 'main_image', 'category', 'tag', 'expire', 'status']
 
         labels = {
             "title": "عنوان",
             "description":"توضیحات",
             "price":"قیمت",
             "number_product":"تعداد",
-            "image":"عکس",
+            "main_image":"عکس",
             "category":"دسته بندی",
             "tag":"تگ",
             "expire":"تاریخ انقضا",

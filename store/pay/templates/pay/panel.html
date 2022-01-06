@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block title %}admin - {{ market }}{% endblock title %}
+
+{% block drop_down %}
+
+<li><a class="dropdown-item" href="{% url 'pay:cart_list' market.slug %}">سبد های خرید</a></li>
+<li>
+
+<li><a class="dropdown-item" href="{% url 'shop:store' market.slug %}">فروشگاه</a></li>
+<li>
+
+{% endblock %}
+
+{% block content %}
+
+{% block form %}{% endblock %}
+
+{% endblock %}

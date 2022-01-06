@@ -10,5 +10,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('', include('shop.urls', namespace='shop')),
+    path('blog/', include('blog.urls', namespace='blog')),
     path('accounts/', include('accounts.urls', namespace='accounts')),
+    path('pay/', include('pay.urls', namespace='pay')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -39,14 +39,17 @@
         بلاگ
     </a>
     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-        <li><a class="dropdown-item" href="#">لیست پست ها</a></li>
+        <li><a class="dropdown-item" href="{% url 'blog:show_post' market.slug %}">لیست پست ها</a></li>
         <li>
             <hr class="dropdown-divider">
         </li>
-        <li><a class="dropdown-item" href="#">افزودن پست</a></li>
+        <li><a class="dropdown-item" href="{% url 'blog:create_post' market.slug %}">افزودن پست</a></li>
         <li>
     </ul>
 </li>
+
+<li><a class="dropdown-item" href="{% url 'panel:show_panel' market.slug %}">پنل</a></li>
+<li>
 {% endblock %}
 
 {% block content %}

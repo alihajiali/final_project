@@ -65,7 +65,7 @@ class Product(models.Model):
     price = models.IntegerField()
     market = models.ForeignKey(Market, on_delete=CASCADE)
     number_product = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='products/%Y/%m/%d/')
+    main_image = models.ImageField(upload_to='products/%Y/%m/%d/')
     category = models.ManyToManyField(Category)
     tag = models.ManyToManyField(Tag)
     like = models.ManyToManyField(User, blank=True)

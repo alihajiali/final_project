@@ -1,0 +1,41 @@
+{% extends 'pay/panel.html' %}
+
+{% load static %}
+
+{% block js_file %}
+    <script src="{% static 'pay/js/script.js' %}"></script>
+{% endblock %}
+
+{% block form %}
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th scope="col">تغییر وضعیت</th>
+            <th scope="col">زمان اخرین بروز رسانی</th>
+            <th scope="col">زمان ایجاد</th>
+            <th scope="col">کاربر</th>
+            <th scope="col">مشاهده جزئیات</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cart in carts %}
+        <tr>
+            {% if cart.status == 'A' %}
+            <td><button id="status_btn" data-id="{{ cart.id }}" class="btn btn-primary">تایید کردن -> پرداخت کردن</button></td>
+            {% elif cart.status == 'N' %}
+            <td><button id="status_btn" data-id="{{ cart.id }}" class="btn btn-warning">تایید نکردن -> تایید کردن</button></td>
+            {% elif cart.status == 'S' %}
+            <td><button id="status_btn" data-id="{{ cart.id }}" class="btn btn-success">پرداخت شده است</button></td>
+            {% else %}
+            <td><button id="status_btn" data-id="{{ cart.id }}" class="btn btn-danger">در دست بررسی -> تایید نکردن</button></td>
+            {% endif %}
+
+            <td><p>{{ cart.updated }}</p></td>
+            <td><p>{{ cart.created }}</p></td>
+            <td><p>{{ cart.owner.full_name }}</p></td>
+            <td><a href="" class="btn btn-primary">جزئیات</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
