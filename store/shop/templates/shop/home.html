@@ -19,10 +19,10 @@
 <div class="container">
     <div class="row">
         {% for product in products %}
-        <div class="col-md-3" style="margin: 5% 5px;">
+        <div class="col-md-4" style="margin: 2% 0;">
 
-            <div class="card" style="width: 15rem;">
-                <img style="border-radius: 20%;" src="{{ product.main_image.url }}" class="card-img-top" alt="image">
+            <div class="card" style="width: 18rem;">
+                <img style="border-radius: 20%; width: 238px; height: 250px;" src="{{ product.main_image.url }}" class="card-img-top" alt="image">
                 <div class="card-body">
                     <h5 class="card-title">{{ product.title }}</h5>
                     <p class="card-text">{{ product.description|slice:"0:20" }}</p>
