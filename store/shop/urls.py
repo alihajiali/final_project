@@ -5,7 +5,7 @@ from . import views
 app_name = 'shop' 
 
 urlpatterns = [
-    path('', views.home, name='home'),
+    path('', views.Home.as_view(), name='home'),
     path('store/<slug:slug>/', views.Admin_Store.as_view(), name='store'),
     # Tag
     path('<slug:slug>/create_tag/', views.CreateTag.as_view(), name="create_tag"),

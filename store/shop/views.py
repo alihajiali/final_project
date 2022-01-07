@@ -10,8 +10,10 @@ from django.views.generic.edit import DeleteView, UpdateView
 from shop.models import Category, Market, Tag, Product
 from .forms import NewTag, NewCategory, CreateProductForm
 
-def home(request):
-    return render(request, 'shop/home.html')
+class Home(View):
+    def get(self, request, *args, **kwargs):
+        products = Product.objects.all()
+        return render(request, "shop/home.html", {'products':products})
 
 
 

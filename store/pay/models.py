@@ -36,8 +36,8 @@ class cart_item(models.Model):
     number = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=0)
     
-    # def __str__(self):
-    #     return self.price
+    def __str__(self):
+        return self.cart.__str__()
 
     def get_cost(self):
         return self.price * self.number
