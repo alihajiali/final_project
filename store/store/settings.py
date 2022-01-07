@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'accounts',
     'blog',
     'pay',
-    'shop',
+    'shop', 
 
     #installed
     'rest_framework',
