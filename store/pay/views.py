@@ -1,7 +1,7 @@
 from django.http.response import JsonResponse
 from django.shortcuts import render
 from django.views.generic import View
-from pay.models import Cart
+from pay.models import Cart, cart_item
 from shop.models import Market
 
 class Show_panel(View):
@@ -50,3 +50,14 @@ class StatusS(View):
         cart.status = 'S'
         cart.save()
         return JsonResponse({'status':'ok'})
+
+
+
+class ShowDetail(View):
+    def get(self, request, *args, **kwargs):
+        cart = Cart.objects.get(id=self.kwargs['pk'])
+        item_cart = cart_item.objects.filter(cart=cart)
+        market = Market.objects.get(slug=self.kwargs['slug'])
+        if request.user == market.owner:
+            return render(request, "pay/cart_detail.html", {'market':market, 'cart':cart, 'item_cart':item_cart})
+        return render(request, "404.html")

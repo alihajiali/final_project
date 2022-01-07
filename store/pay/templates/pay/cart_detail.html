@@ -1,0 +1,42 @@
+{% extends 'pay/panel.html' %}
+
+{% load static %}
+
+{% block js_file %}
+<script src="{% static 'pay/js/script.js' %}"></script>
+{% endblock %}
+
+{% block form %}
+
+<a href="{% url 'pay:cart_list' market.slug %}" style="width: 100%; margin: 1% 0;" class="btn btn-danger">بازگشت به صفحه لیست کارت ها</a>
+
+
+<table class="table table-striped text-center">
+    <thead>
+        <tr>
+            <th scope="col">قیمت مجموع</th>
+            <th scope="col">تعداد</th>
+            <th scope="col">قیمت</th>
+            <th scope="col">محصول</th>
+            <th scope="col">کارت</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            {% for item in item_cart %}
+            <td><p>{{ item.get_cost }}</p></td>
+            <td><p>{{ item.number }}</p></td>
+            <td><p>{{ item.price }}</p></td>
+            <td><p>{{ item.product }}</p></td>
+            <td><p>{{ cart }}</p></td>
+            {% endfor %}
+        </tr>
+    </tbody>
+
+</table>
+
+<hr>
+
+<p class="text-center"><strong>قیمت کل : {{ cart.get_total_price }}</strong></p>
+
+{% endblock %}

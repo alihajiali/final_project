@@ -26,7 +26,7 @@ class Cart(models.Model):
         return f"{self.created} - {self.owner}"
 
     def get_total_price(self):
-        return sum(item.get_cost() for item in self.items.all())
+        return sum(item.get_cost() for item in self.cart_item.all())
 
 
 

@@ -33,7 +33,7 @@
             <td><p>{{ cart.updated }}</p></td>
             <td><p>{{ cart.created }}</p></td>
             <td><p>{{ cart.owner.full_name }}</p></td>
-            <td><a href="" class="btn btn-primary">جزئیات</a></td>
+            <td><a href="{% url 'pay:show_detail' market.slug cart.id %}" class="btn btn-primary">جزئیات</a></td>
         </tr>
         {% endfor %}
     </tbody>

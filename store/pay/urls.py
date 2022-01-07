@@ -10,4 +10,5 @@ urlpatterns = [
     path('status_a/', views.StatusA.as_view(), name='status_a'),
     path('status_n/', views.StatusN.as_view(), name='status_n'),
     path('status_s/', views.StatusS.as_view(), name='status_s'),
+    path('<slug:slug>/show_detail/<int:pk>/', views.ShowDetail.as_view(), name='show_detail'),
 ]
