@@ -1,0 +1,54 @@
+{% extends 'shop/admin_store.html' %}
+
+{% block form %}
+<div style="margin: 5% 35% 0 35%;">
+    <img style="width: 100%;" src="{{ product.main_image.url }}" alt="">
+    <h3 class="text-center"><strong>{{ product.title }}</strong></h3>
+</div>
+<hr>
+<div style="margin: 3% 15%;">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <a href="{% url 'shop:product_like' product.id %}">
+                    <p dir="auto" class="text-danger text-center fs-4">لایک :<br>{{ product.like_count }}</p>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <p dir="auto" class="text-danger text-center fs-4">دسته بندی ها :<br>{{ product.category }}</p>
+            </div>
+            <div class="col-md-4">
+                <p dir="auto" class="text-danger text-center fs-4">تگ ها :<br>{{ product.tag }}</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <hr>
+    <hr>
+    <p dir="auto"><strong>{{ product.description }}</strong></p>
+    <hr>
+    <hr>
+    <hr>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <p dir="auto" class="text-danger text-center fs-1">قیمت :<br>{{ product.price }}<br><button class="btn btn-primary">افزودن به سبد خرید</button></p>
+            </div>
+            <div class="col-md-4">
+                <p dir="auto" class="text-danger text-center fs-1">تعداد محصولات باقی مانده :<br>{{product.number_product }}</p>
+            </div>
+            <div class="col-md-4">
+                <p dir="auto" class="text-danger text-center fs-1">فروشگاه :<br>{{ product.market }}</p>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <hr>
+    <hr>
+    <div class="card">
+        <div class="card-body text-center">
+            تاریخ انقضاء :{{ product.expire }}
+        </div>
+    </div>
+</div>
+{% endblock %}

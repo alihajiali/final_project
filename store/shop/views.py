@@ -1,26 +1,31 @@
 from typing import Generator
+from django.db.models.fields import mixins
 from django.http import request
 from django.http.response import HttpResponse
 from django.shortcuts import render, redirect
-from django.template.base import Template
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, TemplateView
 from django.urls import reverse_lazy, reverse
 from django.views.generic.base import View
 from django.views.generic.edit import DeleteView, UpdateView
 from shop.models import Category, Market, Tag, Product
 from .forms import NewTag, NewCategory, CreateProductForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.mixins import LoginRequiredMixin
 
-def home(request):
-    return render(request, 'shop/home.html')
+class Home(ListView):
+    model = Product
+    template_name = 'shop/home.html'
+    context_object_name = 'products'
+    paginate_by = 12
 
 
 
-class Admin_Store(View):
-    def get(self, request, *args, **kwargs):
-        market = Market.objects.get(slug=self.kwargs['slug'])
-        if request.user == market.owner:
-            return render(request, "shop/admin_store.html", {'market':market})
-        return render(request, "404.html")
+class Admin_Store(TemplateView):
+    template_name = "shop/admin_store.html"
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(**kwargs)
+        data['market'] = Market.objects.get(slug=self.kwargs['slug'])
+        return data
 
 
 
@@ -30,7 +35,6 @@ class Admin_Store(View):
 
 class CreateTag(CreateView):
     model = Tag
-
     def post(self, request, *args, **kwargs):
         form = NewTag(request.POST)
         market = Market.objects.get(slug=self.kwargs['slug'])
@@ -45,7 +49,7 @@ class CreateTag(CreateView):
                     tag.owner = market
                     tag.save()
         tags = Tag.objects.filter(owner = market)
-        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
+        return redirect("shop:show_tag", market.slug)
 
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
@@ -54,11 +58,20 @@ class CreateTag(CreateView):
 
 
 
-class ShowTag(View):
+class ShowTag(ListView):
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
         tags = Tag.objects.filter(owner=market)
-        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
+
+        page_num = request.GET.get('page', 1)
+        paginator = Paginator(tags, 10)
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+        return render(request, "shop/tag/tag_list.html", {'market':market, 'page_obj': page_obj})
 
 
 
@@ -80,7 +93,7 @@ class EditTag(View):
                     tag.title = new_tag.title
                     tag.save()
         tags = Tag.objects.filter(owner = market)
-        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
+        return redirect("shop:show_tag", market.slug)
 
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
@@ -103,7 +116,7 @@ class DeleteTag(View):
         tag.delete()
         market = tag.owner
         tags = Tag.objects.filter(owner = market)
-        return render(request, "shop/tag/tag_list.html", {'tags':tags, 'market':market})
+        return redirect("shop:show_tag", market.slug)
 
 
 
@@ -128,7 +141,8 @@ class CreateCategory(CreateView):
                     category.owner = market
                     category.save()
         categorys = Category.objects.filter(owner = market)
-        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
+        return redirect("shop:show_category", market.slug)
+        # return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
 
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
@@ -141,7 +155,16 @@ class ShowCategory(View):
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
         categorys = Category.objects.filter(owner=market)
-        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
+
+        page_num = request.GET.get('page', 1)
+        paginator = Paginator(categorys, 10)
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+        return render(request, "shop/category/category_list.html", {'market':market, 'page_obj': page_obj})
 
 
 
@@ -159,7 +182,7 @@ class EditCategory(View):
                 category.parent = new_category.parent
                 category.save()
         categorys = Category.objects.filter(owner = market)
-        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
+        return redirect("shop:show_category", market.slug)
 
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
@@ -182,7 +205,7 @@ class DeleteCategory(View):
         category.delete()
         market = category.owner
         categorys = Category.objects.filter(owner = market)
-        return render(request, "shop/category/category_list.html", {'categorys':categorys, 'market':market})
+        return redirect("shop:show_category", market.slug)
 
 
 
@@ -217,7 +240,16 @@ class ShowProduct(View):
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
         products = Product.objects.filter(market=market)
-        return render(request, "shop/product/product_list.html", {'products':products, 'market':market})
+
+        page_num = request.GET.get('page', 1)
+        paginator = Paginator(products, 6)
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+        return render(request, "shop/product/product_list.html", {'market':market, 'page_obj': page_obj})
 
 
 
@@ -255,3 +287,27 @@ class DeleteProduct(View):
         market = product.market
         products = Product.objects.filter(market = market)
         return redirect("shop:show_product", market.slug)
+
+
+
+class ProductDetail(DeleteView):
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.get(id=self.kwargs['pk'])
+        market = product.market
+        return render(request, "shop/product/product_detail.html", {'market':market, 'product':product})
+
+
+
+class ProductLike(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        product = Product.objects.get(pk=self.kwargs['pk'])
+        user = request.user
+        if user in product.like.all():
+            product.like.remove(user)
+            product.like_count -= 1
+        else : 
+            product.like.add(user)
+            product.like_count += 1
+        product.save()
+        market = product.market
+        return redirect("shop:product_detail", product.id)

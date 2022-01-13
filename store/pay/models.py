@@ -17,7 +17,7 @@ class Cart(models.Model):
     market = models.ForeignKey(Market, on_delete=CASCADE, related_name='market_cart')
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
-    status = models.CharField(max_length=1, choices=STATUS)
+    status = models.CharField(max_length=1, choices=STATUS, default='P')
 
     class Meta:
         ordering = ('-created',)
@@ -36,8 +36,8 @@ class cart_item(models.Model):
     number = models.PositiveSmallIntegerField(default=1)
     price = models.DecimalField(max_digits=10, decimal_places=0)
     
-    # def __str__(self):
-    #     return self.price
+    def __str__(self):
+        return self.cart.__str__()
 
     def get_cost(self):
         return self.price * self.number

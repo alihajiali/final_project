@@ -5,6 +5,8 @@ from django.views.generic.base import View
 from shop.models import Market
 from .models import Post
 from .forms import CreatePostForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 class CreatePost(CreateView):
@@ -34,7 +36,16 @@ class ShowPost(View):
     def get(self, request, *args, **kwargs):
         market = Market.objects.get(slug=self.kwargs['slug'])
         posts = Post.objects.filter(market=market)
-        return render(request, "blog/post/post_list.html", {'posts':posts, 'market':market})
+
+        page_num = request.GET.get('page', 1)
+        paginator = Paginator(posts, 6)
+        try:
+            page_obj = paginator.page(page_num)
+        except PageNotAnInteger:
+            page_obj = paginator.page(1)
+        except EmptyPage:
+            page_obj = paginator.page(paginator.num_pages)
+        return render(request, "blog/post/post_list.html", {'market':market, 'page_obj': page_obj})
 
 
 

@@ -10,7 +10,7 @@
         </tr>
     </thead>
     <tbody>
-        {% for category in categorys %}
+        {% for category in page_obj %}
         <tr>
             <td><a href="{% url 'shop:delete_category' market.slug category.id %}">حذف</a></td>
             <td><a href="{% url 'shop:edit_category' market.slug category.id %}">ویرایش</a></td>
@@ -19,4 +19,27 @@
         {% endfor %}
     </tbody>
 </table>
+
+<nav>
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}"><li class="page-item disabled page-link">Previous</li></a>
+        {% endif %}
+
+        {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+        <a href="#"><li class="page-item active" aria-current="page">
+            <span class="page-link">{{ i }}</span></li></a>
+        {% else %}
+        <a href="?page={{ i }}"><li class="page-item page-link">{{ i }}</li></a>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}"><li class="page-item page-link">Next</li></a>
+        {% endif %}
+      
+    </ul>
+</nav>
+
 {% endblock %}
