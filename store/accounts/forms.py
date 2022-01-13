@@ -1,5 +1,5 @@
 from django import forms
-from .models import User
+from .models import User, Profile
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from django.contrib.auth.forms import UserCreationForm
 from shop.models import Market
@@ -52,6 +52,12 @@ class SignUpForm(UserCreationForm):
             'password1', 
             'password2', 
             ]
+
+
+class ProfileUserForm(forms.ModelForm):
+    class Meta : 
+        model = Profile
+        fields = ['username', 'address', 'image']
 
 
 class NewMarket(forms.ModelForm):

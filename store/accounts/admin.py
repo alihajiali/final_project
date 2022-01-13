@@ -4,8 +4,10 @@ from django.contrib import admin
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserCreationForm, UserChangeForm
-from .models import User
+from .models import User, Profile
 from django.contrib.auth.models import Group
+
+admin.site.register(Profile)
 
 
 class UserAdmin(BaseUserAdmin):

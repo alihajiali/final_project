@@ -22,4 +22,6 @@ urlpatterns = [
     path('<slug:slug>/show_product/', views.ShowProduct.as_view(), name='show_product'),
     path('<slug:slug>/edit_product/<int:pk>/', views.EditProduct.as_view(), name='edit_product'),
     path('<slug:slug>/delete_product/<int:pk>/', views.DeleteProduct.as_view(), name='delete_product'),
+    path('product_detail/<int:pk>/', views.ProductDetail.as_view(), name='product_detail'),
+    path('product_like/<int:pk>/', views.ProductLike.as_view(), name='product_like'),
 ]

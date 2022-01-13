@@ -16,7 +16,7 @@ class Post(models.Model):
     slug = RandomSlugField(length=10)
     description = models.TextField()
     market = models.ForeignKey(Market, on_delete=CASCADE)
-    main_image = models.ImageField(upload_to='products/%Y/%m/%d/')
+    main_image = models.ImageField(upload_to='post/%Y/%m/%d/')
     category = models.ManyToManyField(Category)
     tag = models.ManyToManyField(Tag)
     like = models.ManyToManyField(User, blank=True)

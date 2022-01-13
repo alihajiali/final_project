@@ -5,9 +5,8 @@ from .managers import MyUserManager
 
 
 class User(AbstractBaseUser):
-	# username = models.CharField(max_length=100, unique=True, blank=True, null=True)
-	email = models.EmailField(max_length=100, unique=True, blank=True, null=True)
-	full_name = models.CharField(max_length=100, blank=True, null=True)
+	email = models.EmailField(max_length=100, unique=True)
+	full_name = models.CharField(max_length=100)
 	phone_number = models.CharField(max_length=9, unique=True, blank=True, null=True)
 	is_admin = models.BooleanField(default=False)
 	is_seller = models.BooleanField(default=False)
@@ -29,3 +28,14 @@ class User(AbstractBaseUser):
 	@property
 	def is_staff(self):
 		return self.is_admin
+
+
+
+class Profile(models.Model):
+	user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile_user')
+	username = models.CharField(max_length=200, unique=True)
+	address = models.TextField()
+	image = models.ImageField(upload_to='profile/%Y/%m/%d/')
+
+	def __str__(self):
+		return self.username

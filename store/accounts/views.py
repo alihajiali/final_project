@@ -1,6 +1,9 @@
+from django.http.response import HttpResponse
 from django.urls import reverse_lazy
-from .forms import SignUpForm, NewMarket
-from .models import User
+
+import accounts
+from .forms import SignUpForm, NewMarket, ProfileUserForm
+from .models import User, Profile
 from shop.models import Market
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, views as auth_views
@@ -33,8 +36,39 @@ class log_out(View):
 
 class profile(Login_is_seller_Mixin, View):
     def get(self, request, *args, **kwargs):
-        market_user = Market.objects.filter(owner=self.request.user)
-        return render(request, "accounts/profile/profile.html", {'market_user':market_user})
+        try:
+            market_user = Market.objects.filter(owner=self.request.user)
+            profile = Profile.objects.get(user=self.request.user)
+            return render(request, "accounts/profile/profile.html", {'market_user':market_user, 'profile':profile})
+        except:
+            form = ProfileUserForm()
+            return render(request, "accounts/profile/create_profile.html", {'form':form})
+    def post(self, request, *args, **kwargs):
+        form = ProfileUserForm(request.POST, request.FILES)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = self.request.user
+            profile.save()
+            form.save_m2m()
+        return redirect('accounts:profile')
+
+
+
+class EditProfile(View):
+    def get(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user=self.request.user)
+        form = ProfileUserForm(instance=profile)
+        return render(request, "accounts/profile/create_profile.html", {'form':form})
+    def post(self, request, *args, **kwargs):
+        profile = Profile.objects.get(user=self.request.user)
+        form = ProfileUserForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            profile = form.save(commit=False)
+            profile.user = self.request.user
+            profile.save()
+            form.save_m2m()
+        return redirect('accounts:profile')
+
 
 
 class CreateShop(CreateView):

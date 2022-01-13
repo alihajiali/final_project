@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'randomslugfield',
     'crispy_forms',
+    'drf_yasg',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -135,7 +136,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 REST_FREAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ]
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.AllowAny',
+    ],
 }
 
 # AUTHENTICATION_BACKENDS = ['accounts.mybackends.EmailUserNameModelBackend','django.contrib.auth.backends.ModelBackend']
