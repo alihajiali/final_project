@@ -11,5 +11,6 @@ app_name = 'api'
 urlpatterns = [
     # path('', include(router.urls)),
     path('CreateCart/', CreateCart.as_view()),
-    path('CreateItemCart/', CreateItemCart.as_view())
+    path('CreateItemCart/', CreateItemCart.as_view()),
+    path('DeleteCartItem/<int:pk>/', DeleteCartItem.as_view()),
 ]

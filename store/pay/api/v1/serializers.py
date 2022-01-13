@@ -22,3 +22,9 @@ class CreateCartSerializer(serializers.ModelSerializer):
     def create(self, validate_data):
         cart = Cart.objects.create(**validate_data)
         return cart
+
+
+class DeleteCartItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = cart_item
+        fields = "__all__"
