@@ -34,6 +34,8 @@ class RegisterView(generics.CreateAPIView):
 
 
 
+
+
 #profile
 
 class ShowProfileView(APIView):

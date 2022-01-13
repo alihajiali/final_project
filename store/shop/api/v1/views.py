@@ -36,22 +36,6 @@ class FilterTypeMarketView(APIView):
 # }
 
 
-# class TypeMarket(APIView):
-#     def get(self, request):
-#         typ = (
-#             {'D': 'کالا های دیجیتال'},
-#             {'C': 'خودرو و ابزار و تجهیزات صنعتی'},
-#             {'M': 'مد و پوشاک'},
-#             {'K': 'اسباب بازی , کودک و نوزاد'},
-#             {'S': 'کالاهای سوپرمارکتی'},
-#             {'Z': 'زیبایی و سلامت'},
-#             {'P': 'خانه و آشپزخانه'},
-#             {'B': 'کتاب و لوازم تحریر و هنر'},
-#             {'V': 'ورزش و سفر'},
-#             {'H': 'محصولات بومی و محلی'},
-#         )
-#         return Response(typ)
-
 
 class TypeMarket(APIView):
     def get(self, request):

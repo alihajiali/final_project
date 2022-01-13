@@ -15,7 +15,7 @@ SECRET_KEY = SECRET_KEY_INFO
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1'] 
+ALLOWED_HOSTS = ['127.0.0.1']
 
 
 # Application definition
@@ -27,13 +27,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #apps
+    # apps
     'accounts',
     'blog',
     'pay',
-    'shop', 
+    'shop',
 
-    #installed
+    # installed
     'rest_framework',
     'randomslugfield',
     'crispy_forms',
@@ -137,12 +137,34 @@ REST_FREAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    'DEFAULT_PERMISSION_CLASSES': [
-        # 'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.AllowAny',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # 'rest_framework.permissions.AllowAny',
+    # ],
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # AUTHENTICATION_BACKENDS = ['accounts.mybackends.EmailUserNameModelBackend','django.contrib.auth.backends.ModelBackend']
 
 LOGIN_REDIRECT_URL = '/'
+
+
+SWAGGER_SETTINGS = {
+    'SHOW_REQUEST_HEADERS': True,
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    },
+    'USE_SESSION_AUTH': False,
+    'JSON_EDITOR': True,
+    'SUPPORTED_SUBMIT_METHODS': [
+        'get',
+        'post',
+        'put',
+        'delete',
+        'patch'
+    ],
+}

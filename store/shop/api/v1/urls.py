@@ -16,5 +16,5 @@ urlpatterns = [
     path('all_product/', AllProductView.as_view()),
     path('tag/<tag>/', TagFilterProduct.as_view()),
     path('price/<min>&<max>/', PriceFilterProduct.as_view()),
-    path('<status>/', AvailibleFilterProduct.as_view()),
+    # path('<status>/', AvailibleFilterProduct.as_view()),
 ]
