@@ -42,11 +42,8 @@ class TypeMarket(APIView):
         queryset = Market.objects.all()
         l = []
         for query in queryset:
-            if query in l:
-                continue
-            else:
-                l.append(query)
-
+            l.append(query)
+        print("*"*80, queryset)
         serialize = TypeMarketSerializer(l, many=True)
         return Response(serialize.data)
 
