@@ -108,4 +108,4 @@ class LoginPhoneNumberValidCode(APIView):
                 return Response(data={"refresh":str(token), 'access':str(token.access_token)}, status=status.HTTP_200_OK)
             else:
                 return Response(phone_number.errors, status=status.HTTP_400_BAD_REQUEST) 
-                
+            
