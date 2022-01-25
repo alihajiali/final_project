@@ -24,7 +24,8 @@ class CreateCartSerializer(serializers.ModelSerializer):
         return cart
 
 
-class DeleteCartItemSerializer(serializers.ModelSerializer):
+
+class CartSerializer(serializers.ModelSerializer):
     class Meta:
-        model = cart_item
+        model = Cart
         fields = "__all__"

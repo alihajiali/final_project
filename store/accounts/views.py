@@ -1,3 +1,4 @@
+from urllib import request
 from django.http.response import HttpResponse
 from django.urls import reverse_lazy
 
@@ -26,6 +27,7 @@ class register(CreateView):
         user.is_seller = True
         user.save()
         return redirect("accounts:login")
+
 
 
 class log_out(View):
