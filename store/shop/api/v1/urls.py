@@ -10,7 +10,7 @@ app_name = 'api'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('<str:typ>', FilterTypeMarketView.as_view(), name='filter_type_market'),
+    path('<str:typ>/', FilterTypeMarketView.as_view(), name='filter_type_market'),
     path('type_market/', TypeMarket.as_view(), name='type_market'),
 
     path('all_product/', AllProductView.as_view()),
