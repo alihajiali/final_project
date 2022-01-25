@@ -1,4 +1,5 @@
 from django.db.models import fields
+from django.forms import ValidationError
 from rest_framework import serializers
 from ...models import Profile, User
 from rest_framework.validators import UniqueValidator
@@ -50,4 +51,18 @@ class RegisterSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = '__all__'
+        # fields = '__all__'
+        exclude = ['user', ]
+
+
+
+
+class LoginPhoneNumberSerializer(serializers.Serializer):
+    phone_number = serializers.CharField(max_length=9)
+
+
+
+class LoginPhoneNumberSerializerValidCode(serializers.Serializer):
+    phone_number = serializers.CharField(max_length=9)
+    code = serializers.CharField(max_length=5)
+

@@ -12,5 +12,11 @@ urlpatterns = [
     # path('', include(router.urls)),
     path('CreateCart/', CreateCart.as_view()),
     path('CreateItemCart/', CreateItemCart.as_view()),
-    path('DeleteCartItem/<int:pk>/', DeleteCartItem.as_view()),
+    path('DeleteCartItem/', DeleteCartItem.as_view()),
+    path('EditCartItem/', EditCartItem.as_view()),
+
+    path('PayCart/', PayCart.as_view()),
+
+    path('ShowOpenCart/', ShowOpenCart.as_view()),
+    path('ShowPayedCart/', ShowPayedCart.as_view()),
 ]

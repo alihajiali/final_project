@@ -1,6 +1,7 @@
 from .info import *
 from pathlib import Path
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -133,18 +134,13 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-REST_FREAMEWORK = {
+REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
-    # 'DEFAULT_PERMISSION_CLASSES': [
-    #     'rest_framework.permissions.IsAuthenticated',
-    # 'rest_framework.permissions.AllowAny',
-    # ],
-    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
-# AUTHENTICATION_BACKENDS = ['accounts.mybackends.EmailUserNameModelBackend','django.contrib.auth.backends.ModelBackend']
+
 
 LOGIN_REDIRECT_URL = '/'
 
@@ -168,3 +164,8 @@ SWAGGER_SETTINGS = {
         'patch'
     ],
 }
+
+
+REDIS_HOST='localhost'
+REDIS_PORT=6379
+REDIS_DB=0
